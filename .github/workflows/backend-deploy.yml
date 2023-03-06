@@ -1,0 +1,20 @@
+name: Deploy BE
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Deploy BE
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: sync
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ftp.epizy.com
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./back/
+          server-dir: htdocs/
