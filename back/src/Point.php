@@ -1,6 +1,6 @@
 <?php
 
-namespace Scandiweb;
+namespace App;
 
 class Point
 {
