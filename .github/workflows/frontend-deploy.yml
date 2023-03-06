@@ -26,3 +26,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./front/build
           publish_branch: pages
+          cname: scandiweb.ukasz.com
