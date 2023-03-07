@@ -4,33 +4,27 @@ namespace Framework;
 
 class Router
 {
-    private array $mappings;
-    private bool $ignoreEndSlash;
-    private bool $ignoreCase;
+    private array $mappings = [];
 
-
-    public function __construct($ignoreEndSlash=true, $ignoreCase=true)
+    public function register(string $url, object $controller): void
     {
-        $this->mappings = [];
-        $this->ignoreEndSlash = $ignoreEndSlash;
-        $this->ignoreCase = $ignoreCase;
-    }
-
-    public function register($url, $controller)
-    {
-        $pattern = '!^' . $url . '$!';
-        if ($this->ignoreCase) {
-            $pattern .= 'i';
-        }
+        $url = rtrim($url, '/');
+        $pattern = '!^' . $url . '$!i';
         $this->mappings[$pattern] = $controller;
     }
 
-    public function handleRequest()
+    public function handleRequest(): void
     {
-        $url = $_SERVER['PATH_INFO'];
-        if ($this->ignoreEndSlash) {
-            $url = rtrim($url, '/');
-        }
+        $matchingMapping = $this->getMatchingMapping();
+        $matchedPattern = key($matchingMapping);
+        $matchedController = current($matchingMapping);
+        $this->extractUrlParams($matchedPattern);
+        $this->callControllerAction($matchedController);
+    }
+
+    private function getMatchingMapping(): array
+    {
+        $url = rtrim($_SERVER['PATH_INFO'], '/');
 
         $matching_controllers = array_filter(
             $this->mappings,
@@ -48,8 +42,20 @@ class Router
             die();
         }
 
-        $pattern = key($matching_controllers);
-        $controller = current($matching_controllers);
+        return $matching_controllers;
+    }
+
+    private function extractUrlParams(string $pattern): void
+    {
+        $url = rtrim($_SERVER['PATH_INFO']);
+        $matches = [];
+        preg_match($pattern, $url, $matches);
+        array_shift($matches);
+        $_SERVER['URL_PARAMS'] = $matches;
+    }
+
+    private function callControllerAction(object $controller): void
+    {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         $handlerName = $method . 'Action';
 
@@ -57,11 +63,6 @@ class Router
             http_response_code(404);
             die();
         }
-
-        $matches = [];
-        preg_match($pattern, $url, $matches);
-        array_shift($matches);
-        $_SERVER['URL_PARAMS'] = $matches;
 
         $controller->$handlerName();
     }
