@@ -15,11 +15,11 @@ class Router
 
     public function handleRequest(): void
     {
-        $matchingMapping = $this->getMatchingMapping();
-        $matchedPattern = key($matchingMapping);
-        $matchedController = current($matchingMapping);
+        $matchedMapping = $this->getMatchingMapping();
+        $matchedPattern = key($matchedMapping);
+        $matchedController = current($matchedMapping);
         $this->extractUrlParams($matchedPattern);
-        $this->callControllerAction($matchedController);
+        $matchedController($_SERVER['REQUEST_METHOD']);
     }
 
     private function getMatchingMapping(): array
@@ -52,18 +52,5 @@ class Router
         preg_match($pattern, $url, $matches);
         array_shift($matches);
         $_SERVER['URL_PARAMS'] = $matches;
-    }
-
-    private function callControllerAction(object $controller): void
-    {
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
-        $handlerName = $method . 'Action';
-
-        if (!method_exists($controller, $handlerName)) {
-            http_response_code(404);
-            die();
-        }
-
-        $controller->$handlerName();
     }
 }

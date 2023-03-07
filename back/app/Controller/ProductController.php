@@ -8,7 +8,10 @@ class ProductController extends Controller
 {
     public function getAction()
     {
-        echo "ProductController::get";
-        print_r($_SERVER['URL_PARAMS']);
+        $data = [
+          'ala' => 'kot',
+          'ma' => [1, 2, 3, 4],
+        ];
+        $this->sendResponse($data, 201);
     }
 }
