@@ -6,10 +6,9 @@ use Framework\Router;
 use App\Controller\ProductController;
 use App\Controller\ProductsController;
 
-$router = new Router();
-$router->register('api/products', new ProductsController());
-$router->register('api/products/(.*)', new ProductController());
-$router->handleRequest();
+header('Content-Type: application/json; charset=utf-8');
 
-$_SERVER;
-print_r($GLOBALS);
+$router = new Router();
+$router->register('/api/products', new ProductsController());
+$router->register('/api/products/(\d+)', new ProductController());
+$router->handleRequest();
