@@ -1,9 +1,9 @@
-<html>
-    <head>
-        <title>Index</title>
-    </head>
-    <body>
-        <pre><?= print_r($GLOBALS) ?></pre>
-        <pre><?= print_r($_SERVER) ?></pre>
-    </body>
-</html>
+<?php
+
+require __DIR__ . '/inc/init.php';
+
+use App\Models\Book;
+
+$_SERVER;
+print_r($GLOBALS);
+print_r(new Book());
