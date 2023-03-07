@@ -1,5 +1,8 @@
-Order deny,allow
-Deny from all
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1?%{QUERY_STRING} [L]
 
 ErrorDocument 403 "Error 403"
 ErrorDocument 404 "Error 404"
