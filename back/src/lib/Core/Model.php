@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace Lib\Core;
 
 abstract class Model
 {

@@ -1,41 +1,31 @@
 <?php
 
-namespace Framework;
+namespace Lib\Core;
 
 abstract class Controller
 {
-    public function __invoke(string $method)
+    public function handleRequest(): void
     {
-        $handlerName = strtolower($method) . 'Action';
+        $handlerName = strtolower($_SERVER['REQUEST_METHOD']) . 'Action';
         $this->$handlerName();
     }
 
-    protected function getAction()
+    protected function getAction(): void
     {
         $this->sendResponse(null, 404);
     }
 
-    protected function postAction()
+    protected function postAction(): void
     {
         $this->sendResponse(null, 404);
     }
 
-    protected function deleteAction()
+    protected function deleteAction(): void
     {
         $this->sendResponse(null, 404);
     }
 
-    protected function putAction()
-    {
-        $this->sendResponse(null, 404);
-    }
-
-    protected function patchAction()
-    {
-        $this->sendResponse(null, 404);
-    }
-
-    protected function sendResponse($data, int $status=200)
+    protected function sendResponse($data, int $status=200): void
     {
         http_response_code($status);
         if (is_array($data)) {

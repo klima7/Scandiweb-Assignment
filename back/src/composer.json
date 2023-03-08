@@ -4,8 +4,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Api\\": "api/",
-            "Framework\\": "framework/"
+            "Lib\\": "lib"
         }
     },
     "authors": [
@@ -19,6 +18,7 @@
     },
     "scripts": {
         "start": "php -S localhost:443",
-        "db_setup": "php scripts\\db_setup.php"
+        "db_setup": "php scripts\\db_setup.php",
+        "db_destroy": "php scripts\\db_destroy.php"
     }
 }

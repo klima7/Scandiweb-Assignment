@@ -1,8 +1,8 @@
 <?php
 
-require __DIR__ . '/../inc/bootstrap.php';
+require __DIR__ . '/../../inc/bootstrap.php';
 
-use Framework\Database;
+use Lib\Core\Database;
 
 const CREATE_TABLE_QUERY = <<<TEXT
 CREATE TABLE IF NOT EXISTS products(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Model;
+namespace Lib\Model;
 
 class Disc
 {

@@ -16,7 +16,7 @@ jobs:
           php-version: '7.4'
           tools: composer:v2
       - name: Dump autoload
-        working-directory: ./back
+        working-directory: ./back/src
         run: composer dump-autoload -o
       - name: Sync
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -24,7 +24,7 @@ jobs:
           server: ftp.epizy.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./back/
+          local-dir: ./back/src/
           server-dir: htdocs/
           exclude: |
             inc/config.php

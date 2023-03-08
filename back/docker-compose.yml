@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+    php:
+        container_name: php
+        image: php
+        restart: always
+        command: bash -c "a2enmod rewrite && apache2-foreground"
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: base
+        ports:
+            - "${PORT}:80"
+        environment: 
+          - COMPOSER_ALLOW_SUPERUSER=1
+        depends_on:
+          - mysql
+        volumes:
+          - ./src:/var/www/html
+    mysql:
+      image: mysql:5.7
+      restart: always
+      ports:
+          - "3306:3306"
+      environment:
+          MYSQL_ROOT_USER: user
+          MYSQL_ROOT_PASSWORD: user
+          MYSQL_DATABASE: db

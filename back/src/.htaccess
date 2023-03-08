@@ -1,0 +1,5 @@
+Allow from all
+
+RewriteEngine On
+
+RewriteRule ^(.*)$ public/$1 [END]

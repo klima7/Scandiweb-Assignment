@@ -1,7 +1,0 @@
-Allow from all
-
-# folder access protection
-AuthUserFile scripts//.htpasswd.admin
-AuthName password_required
-AuthType Basic
-Require valid-user
