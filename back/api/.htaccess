@@ -1,0 +1,6 @@
+Allow from all
+
+# redirect all /api/* request to index.php
+RewriteEngine on
+RewriteBase /api/
+RewriteRule ^(.*)$ index.php [L]

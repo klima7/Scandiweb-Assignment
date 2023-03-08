@@ -1,11 +1,5 @@
-RewriteEngine on
-php_value display_errors On
+Deny from all
 
 # force https
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
-
-# redirect all requests to index.php
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php/$1?%{QUERY_STRING} [L]

@@ -26,3 +26,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./back/
           server-dir: htdocs/
+          exclude: |
+            inc/config.php
+            .gitignore
+            composer.json
+            composer.lock

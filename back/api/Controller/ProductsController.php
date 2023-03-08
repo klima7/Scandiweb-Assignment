@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace Api\Controller;
 
 use Framework\Controller;
 
