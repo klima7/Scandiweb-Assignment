@@ -6,10 +6,10 @@ class Router
 {
     private array $mappings = [];
 
-    public function register(string $url, object $controller): void
+    public function register(string $path, object $controller): void
     {
-        $url = rtrim($url, '/');
-        $pattern = '!^' . $url . '$!i';
+        $path = rtrim($path, '/');
+        $pattern = '!^' . $path . '$!i';
         $this->mappings[$pattern] = $controller;
     }
 
@@ -24,33 +24,39 @@ class Router
 
     private function getMatchingMapping(): array
     {
-        $url = rtrim($_SERVER['PATH_INFO'], '/');
+        $path = $this->getRequestedPath();
 
-        $matching_controllers = array_filter(
+        $matchingControllers = array_filter(
             $this->mappings,
-            fn ($pattern) => preg_match($pattern, $url),
+            fn ($pattern) => preg_match($pattern, $path),
             ARRAY_FILTER_USE_KEY
         );
 
-        if (count($matching_controllers) == 0) {
+        if (count($matchingControllers) == 0) {
             http_response_code(404);
             die();
         }
 
-        if (count($matching_controllers) > 1) {
+        if (count($matchingControllers) > 1) {
             http_response_code(500);
             die();
         }
 
-        return $matching_controllers;
+        return $matchingControllers;
     }
 
     private function extractUrlParams(string $pattern): void
     {
-        $url = rtrim($_SERVER['PATH_INFO']);
+        $url = $this->getRequestedPath();
         $matches = [];
         preg_match($pattern, $url, $matches);
         array_shift($matches);
         $_SERVER['URL_PARAMS'] = $matches;
+    }
+
+    private function getRequestedPath(): string
+    {
+        $parsed = parse_url($_SERVER['REQUEST_URI']);
+        return $parsed["path"];
     }
 }
