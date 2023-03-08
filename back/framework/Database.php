@@ -6,13 +6,26 @@ use PDO;
 
 class Database
 {
-    private $pdo;
+    private static $pdo;
 
-    public function __construct()
+    public static function getPdo(): object
+    {
+        self::ensureConnected();
+        return self::$pdo;
+    }
+
+    private static function ensureConnected()
+    {
+        if (self::$pdo == null) {
+            self::connect();
+        }
+    }
+
+    private static function connect()
     {
         global $db_host, $db_name, $db_user, $db_password;
         $dsn = "mysql:host=$db_host;dbname=$db_name;charset=UTF8";
-        $this->pdo = new PDO(
+        self::$pdo = new PDO(
             $dsn,
             $db_user,
             $db_password,
