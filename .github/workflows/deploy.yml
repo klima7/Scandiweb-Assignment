@@ -1,11 +1,11 @@
-name: Deploy BE
+name: Deploy
 on: 
   push:
     branches:
       - master
 jobs:
   deploy:
-    name: Deploy BE
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,18 +16,34 @@ jobs:
           php-version: '7.4'
           tools: composer:v2
       - name: Dump autoload
-        working-directory: ./back/src
         run: composer dump-autoload -o
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
       - name: Sync
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ftp.epizy.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./back/src/
           server-dir: htdocs/
+          state-name: .sync-state
           exclude: |
-            inc/config.php
+            src/**
+            public/**
+            node_modules/**
+            .github/**
+            .git/**
             .gitignore
             composer.json
             composer.lock
+            package.json
+            package-lock.json
+            php/inc/config.php
+            Dockerfile
+            docker-compose.yml

@@ -1,5 +1,8 @@
 Allow from all
 
+DirectoryIndex index.php index.html
+
 RewriteEngine On
 
-RewriteRule ^(.*)$ public/$1 [END]
+RewriteRule ^(.*)$ build/$1 [END]
+

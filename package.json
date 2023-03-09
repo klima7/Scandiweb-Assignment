@@ -40,7 +40,8 @@
   "watch": {
     "build": {
       "patterns": ["src", "public"],
-      "extensions": "js,jsx,css,svg,png,txt,ico,html"
+      "extensions": "js,jsx,css,svg,png,txt,ico,html",
+      "legacyWatch": true
     }
   }
 }

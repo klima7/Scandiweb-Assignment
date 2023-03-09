@@ -17,7 +17,7 @@ services:
         depends_on:
           - mysql
         volumes:
-          - ./back/src:/var/www/html
+          - .:/var/www/html
     mysql:
       image: mysql:5.7
       restart: always
