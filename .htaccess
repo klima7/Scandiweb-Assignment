@@ -1,8 +1,12 @@
 Allow from all
 
-DirectoryIndex index.php index.html
-
 RewriteEngine On
 
-RewriteRule ^(.*)$ build/$1 [END]
+RewriteCond $1 !^build/
+RewriteRule ^(.*)$ build/$1 [DPI]
 
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ $1 [END]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ build/index.html [END]
