@@ -3,7 +3,6 @@ vendor/
 .php-cs-fixer.cache
 .env
 
-
 # dependencies
 /node_modules
 /.pnp
