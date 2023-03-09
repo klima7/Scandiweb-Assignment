@@ -2,19 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Add from "./add/index";
-import List from "./list/index";
+import ListPage from "./pages/list/index";
+import AddPage from "./pages/add/index";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <List />,
+    element: <ListPage />,
   },
   {
     path: "/add",
-    element: <Add />,
+    element: <AddPage />,
   },
   {
     path: "*",

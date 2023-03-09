@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-function List() {
+function ListPage() {
   return (
     <Fragment>
     <div className="App">
@@ -10,4 +10,4 @@ function List() {
   );
 }
 
-export default List;
+export default ListPage;

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-function Add() {
+function AddPage() {
   return (
     <Fragment>
     <div className="App">
@@ -10,4 +10,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default AddPage;
