@@ -5,3 +5,4 @@ namespace Lib\Model;
 class Product
 {
 }
+
