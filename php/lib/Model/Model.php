@@ -6,6 +6,14 @@ abstract class Model
 {
     private string $id;
 
+    public function __construct(array $attrs)
+    {
+        foreach ($attrs as $attr => $value) {
+            $setterName = 'set' . ucfirst($attr);
+            $this->$setterName($value);
+        }
+    }
+
     public function getId(): string
     {
         return $this->id;
