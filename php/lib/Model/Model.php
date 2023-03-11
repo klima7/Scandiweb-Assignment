@@ -4,6 +4,20 @@ namespace Lib\Model;
 
 abstract class Model
 {
-    abstract public static function getAll(): array;
-    abstract public function save();
+    private string $id;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function clearId(): void
+    {
+        $this->id = null;
+    }
 }
