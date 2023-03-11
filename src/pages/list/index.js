@@ -1,7 +1,12 @@
 import { Fragment } from 'react';
 import Button from 'react-bootstrap/Button';
+import jquery from 'jquery';
 
 function ListPage() {
+  jquery.get('api/products.php', (data, status) => {
+    console.log(status);
+    console.log(data);
+  });
   return (
     <Fragment>
     <div className="App">
