@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../../php/inc/bootstrap.php';
 
-use Lib\Core\Database;
+use Lib\Data\Database;
 
 const DESTROY_QUERY = <<<TEXT
     DROP TABLE IF EXISTS products;

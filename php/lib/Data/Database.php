@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib\Core;
+namespace Lib\Data;
 
 use PDO;
 

@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../../php/inc/bootstrap.php';
 
-use Lib\Core\Database;
+use Lib\Data\Database;
 
 const CREATE_TABLE_QUERY = <<<TEXT
 CREATE TABLE IF NOT EXISTS products(

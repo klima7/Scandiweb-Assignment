@@ -2,7 +2,7 @@
 
 namespace Lib\Controller;
 
-use Lib\Core\Controller;
+use Lib\Controller\Controller;
 
 class ProductsController extends Controller
 {
