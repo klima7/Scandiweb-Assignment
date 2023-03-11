@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import ListPage from "./pages/list/index";
-import AddPage from "./pages/add/index";
+import ListPage from './pages/list/index';
+import AddPage from './pages/add/index';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
