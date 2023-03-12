@@ -18,4 +18,11 @@ class Disc extends Product
         ValidationUtils::assertGreaterEqual($size, "size", 0);
         $this->size = $size;
     }
+
+    public function jsonSerialize(): array
+    {
+        return parent::jsonSerialize() + [
+            'size' => $this->getSize(),
+        ];
+    }
 }

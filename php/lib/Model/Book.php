@@ -2,6 +2,7 @@
 
 namespace Lib\Model;
 
+use JsonSerializable;
 use Lib\Validation\ValidationUtils;
 
 class Book extends Product
@@ -17,5 +18,12 @@ class Book extends Product
     {
         ValidationUtils::assertGreaterEqual($weight, "weight", 0);
         $this->weight = $weight;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return parent::jsonSerialize() + [
+            'weight' => $this->getWeight(),
+        ];
     }
 }

@@ -43,4 +43,13 @@ class Product extends Model
         ValidationUtils::assertFractionDigitsCount($price, "price", 2);
         $this->price = $price;
     }
+
+    public function jsonSerialize(): array
+    {
+        return parent::jsonSerialize() + [
+            'sku' => $this->getSku(),
+            'name' => $this->getName(),
+            'price' => $this->getPrice(),
+        ];
+    }
 }

@@ -22,6 +22,7 @@
         "db_destroy": "php scripts\\db_destroy.php"
     },
   "require": {
-    "ext-pdo": "*"
+      "ext-pdo": "*",
+      "ext-json": "*"
   }
 }

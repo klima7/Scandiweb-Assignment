@@ -2,13 +2,21 @@
 
 namespace Lib\Controller;
 
-use Lib\Controller\Controller;
+use Lib\Data\Database;
 
 class ProductsController extends Controller
 {
+    private object $productRepository;
+
+    public function __construct()
+    {
+        $this->productRepository = Database::getInstance()->getProductRepository();
+    }
+
     public function getAction(): void
     {
-        $this->sendResponse([1, 2, 3, 4]);
+        $products = $this->productRepository->getAll();
+        $this->sendResponse($products);
     }
 
     public function deleteAction(): void

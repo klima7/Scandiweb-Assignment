@@ -42,4 +42,13 @@ class Furniture extends Product
         ValidationUtils::assertGreaterEqual($length, "length", 0);
         $this->length = $length;
     }
+
+    public function jsonSerialize(): array
+    {
+        return parent::jsonSerialize() + [
+            'height' => $this->getHeight(),
+            'width' => $this->getWidth(),
+            'length' => $this->getLength(),
+        ];
+    }
 }

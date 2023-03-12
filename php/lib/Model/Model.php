@@ -2,7 +2,9 @@
 
 namespace Lib\Model;
 
-abstract class Model
+use JsonSerializable;
+
+abstract class Model implements JsonSerializable
 {
     private string $id;
 
@@ -29,5 +31,12 @@ abstract class Model
     public function clearId(): void
     {
         $this->id = null;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId()
+        ];
     }
 }
