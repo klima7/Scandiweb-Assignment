@@ -50,12 +50,7 @@ class Product extends Model implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return [
-                'id' => $this->getId(),
-                'sku' => $this->getSku(),
-                'name' => $this->getName(),
-                'price' => $this->getPrice(),
-            ];
+        return $this->getAttributesArray();
     }
 
     public static function getAll(): array
@@ -80,20 +75,10 @@ class Product extends Model implements \JsonSerializable
 
     protected function executeSave(): int
     {
-        $columns = $this->getDatabaseColumns();
+        $columns = $this->getAttributesArray();
         $query = self::constructInsertQuery($columns);
         Database::getInstance()->execute($query, array_values($columns));
         return Database::getInstance()->getLastInsertedId();
-    }
-
-    protected function getDatabaseColumns(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-        ];
     }
 
     protected function validate(): void
@@ -101,6 +86,16 @@ class Product extends Model implements \JsonSerializable
         ValidationUtils::assertNotNull($this->sku, 'sku');
         ValidationUtils::assertNotNull($this->name, 'name');
         ValidationUtils::assertNotNull($this->price, 'price');
+    }
+
+    protected function getAttributesArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'sku' => $this->getSku(),
+            'name' => $this->getName(),
+            'price' => $this->getPrice(),
+        ];
     }
 
     private static function cvtArrayToObject(array $array): object

@@ -51,23 +51,13 @@ class Furniture extends Product
         ValidationUtils::assertNotNull($this->length, "length");
     }
 
-    public function jsonSerialize(): array
+    protected function getAttributesArray(): array
     {
-        return parent::jsonSerialize() + [
+        return parent::getAttributesArray() + [
             'type' => 'furniture',
             'height' => $this->getHeight(),
             'width' => $this->getWidth(),
             'length' => $this->getLength(),
         ];
-    }
-
-    public function getDatabaseColumns(): array
-    {
-        return parent::getDatabaseColumns() + [
-                'type' => 'furniture',
-                'height' => $this->getHeight(),
-                'width' => $this->getWidth(),
-                'length' => $this->getLength(),
-            ];
     }
 }

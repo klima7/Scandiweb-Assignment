@@ -27,17 +27,9 @@ class Book extends Product
     }
 
 
-    public function jsonSerialize(): array
+    protected function getAttributesArray(): array
     {
-        return parent::jsonSerialize() + [
-            'type' => 'book',
-            'weight' => $this->getWeight(),
-        ];
-    }
-
-    protected function getDatabaseColumns(): array
-    {
-        return parent::getDatabaseColumns() + [
+        return parent::getAttributesArray() + [
             'type' => 'book',
             'weight' => $this->getWeight(),
         ];

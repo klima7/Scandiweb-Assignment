@@ -25,19 +25,11 @@ class Disc extends Product
         ValidationUtils::assertNotNull($this->size, "size");
     }
 
-    public function jsonSerialize(): array
+    protected function getAttributesArray(): array
     {
-        return parent::jsonSerialize() + [
+        return parent::getAttributesArray() + [
             'type' => 'disc',
             'size' => $this->getSize(),
         ];
-    }
-
-    public function getDatabaseColumns(): array
-    {
-        return parent::getDatabaseColumns() + [
-                'type' => 'disc',
-                'size' => $this->getSize(),
-            ];
     }
 }
