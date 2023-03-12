@@ -8,6 +8,8 @@ use Lib\Validation\ValidationUtils;
 
 class Product extends Model implements \JsonSerializable
 {
+    const TYPES = ['book', 'disc', 'furniture'];
+
     private ?string $sku = null;
     private ?string $name = null;
     private ?float $price = null;
@@ -63,14 +65,11 @@ class Product extends Model implements \JsonSerializable
         return array_map(fn ($array) => self::cvtArrayToObject($array), $data);
     }
 
-    public static function get($id): object
+    public static function get($id): ?object
     {
         $query = "select id, type, sku, name, price, size, weight, height, width, length from products where id=?";
         $data = Database::getInstance()->executeAndFetch($query, [$id]);
-        if (count($data) == 0) {
-            throw new ValidationException("Not found");
-        }
-        return self::cvtArrayToObject($data[0]);
+        return count($data) == 0 ? null : self::cvtArrayToObject($data[0]);
     }
 
     protected function executeDelete(): void

@@ -4,7 +4,7 @@ namespace Lib\Model;
 
 abstract class Model
 {
-    protected ?string $id = null;
+    protected ?int $id = null;
 
     public function __construct(array $attrs)
     {
@@ -16,7 +16,7 @@ abstract class Model
         }
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -41,7 +41,7 @@ abstract class Model
 
     abstract public static function getAll(): array;
 
-    abstract public static function get($id): object;
+    abstract public static function get($id): ?object;
 
     abstract protected function executeSave(): int;
 

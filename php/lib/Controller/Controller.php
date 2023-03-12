@@ -45,14 +45,17 @@ abstract class Controller
             header('Content-Type: text/html; charset=utf-8');
             echo $data;
         } elseif (!is_null($data)) {
-            die("Invalid response data");
+            die("invalid response data");
         }
     }
 
-    protected function getRequestBody()
+    protected function getJsonBody()
     {
         $body = file_get_contents('php://input');
         $json = json_decode($body, true);
+        if ($json == null) {
+            throw new ValidationException("invalid json supplied");
+        }
         return $json;
     }
 }
