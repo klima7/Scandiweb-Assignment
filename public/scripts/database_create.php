@@ -4,14 +4,7 @@ require __DIR__ . '/../../php/inc/bootstrap.php';
 
 use Lib\Data\Database;
 
-Database::getInstance()->create();
-echo("Database created");
-
-
-
-
-
-$create_query = <<<TEXT
+$create_query = <<<SQL
         CREATE TABLE IF NOT EXISTS products(
             id INT AUTO_INCREMENT PRIMARY KEY,
             type ENUM('disc', 'book', 'furniture') NOT NULL,
@@ -52,6 +45,7 @@ $create_query = <<<TEXT
                         AND length IS NOT NULL
             )
         );
-        TEXT;
+SQL;
 
-$this->pdo->exec($create_query);
+Database::getInstance()->execute($create_query);
+echo("Database created");
