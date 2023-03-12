@@ -2,37 +2,15 @@
 
 namespace Lib\Controller;
 
-use Lib\Data\Database;
+use Lib\Model\Product;
 use Lib\Validation\ValidationException;
 
 class ProductsController extends Controller
 {
-    private object $productRepository;
-
-    public function __construct()
-    {
-        $this->productRepository = Database::getInstance()->getProductRepository();
-    }
-
     public function getAction(): void
     {
-        $products = $this->productRepository->getAll();
+        $products = Product::getAll();
         $this->sendResponse($products);
-    }
-
-    public function deleteAction(): void
-    {
-        $body = $this->getRequestBody();
-        if (!array_key_exists('ids', $body)) {
-            throw new ValidationException("Missing ids property");
-        }
-
-        foreach ($body['ids'] as $id) {
-            $product = $this->productRepository->get($id);
-            $this->productRepository->delete($product);
-        }
-
-        $this->sendResponse([], 204);
     }
 
     public function postAction(): void
@@ -51,7 +29,22 @@ class ProductsController extends Controller
 
         $className = "Lib\\Model\\$type";
         $product = new $className($body, true);
-        $this->productRepository->save($product);
+        $product->save();
         $this->sendResponse($product, 201);
+    }
+
+    public function deleteAction(): void
+    {
+        $body = $this->getRequestBody();
+        if (!array_key_exists('ids', $body)) {
+            throw new ValidationException("Missing ids property");
+        }
+
+        foreach ($body['ids'] as $id) {
+            $product = Product::get($id);
+            $product->delete();
+        }
+
+        $this->sendResponse([], 204);
     }
 }

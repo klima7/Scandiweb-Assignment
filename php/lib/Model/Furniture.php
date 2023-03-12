@@ -43,7 +43,7 @@ class Furniture extends Product
         $this->length = $length;
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         ValidationUtils::assertNotNull($this->height, "height");
@@ -54,9 +54,20 @@ class Furniture extends Product
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() + [
+            'type' => 'furniture',
             'height' => $this->getHeight(),
             'width' => $this->getWidth(),
             'length' => $this->getLength(),
         ];
+    }
+
+    public function getDatabaseColumns(): array
+    {
+        return parent::getDatabaseColumns() + [
+                'type' => 'furniture',
+                'height' => $this->getHeight(),
+                'width' => $this->getWidth(),
+                'length' => $this->getLength(),
+            ];
     }
 }

@@ -20,7 +20,7 @@ class Book extends Product
         $this->weight = $weight;
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         ValidationUtils::assertNotNull($this->weight, "weight");
@@ -30,6 +30,15 @@ class Book extends Product
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() + [
+            'type' => 'book',
+            'weight' => $this->getWeight(),
+        ];
+    }
+
+    protected function getDatabaseColumns(): array
+    {
+        return parent::getDatabaseColumns() + [
+            'type' => 'book',
             'weight' => $this->getWeight(),
         ];
     }

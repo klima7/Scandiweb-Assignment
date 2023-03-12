@@ -7,9 +7,8 @@ use PDO;
 class Database
 {
     private static ?object $instance = null;
-
     private object $pdo;
-    private ?object $productRepository = null;
+    private array $cache = [];
 
     private function __construct()
     {
@@ -33,65 +32,32 @@ class Database
         return self::$instance;
     }
 
-    public function getProductRepository(): object
+    public function execute(string $query, array $params = []): void
     {
-        if ($this->productRepository == null) {
-            $this->productRepository = new ProductRepository($this->pdo);
+        $statement = $this->getPreparedStatement($query);
+        $statement->execute($params);
+    }
+
+    public function executeAndFetch(string $query, array $params = []): array
+    {
+        $statement = $this->getPreparedStatement($query);
+        $statement->execute($params);
+        return $statement->fetchAll();
+    }
+
+    public function getLastInsertedId()
+    {
+        return $this->pdo->lastInsertId();
+    }
+
+    private function getPreparedStatement(string $query)
+    {
+        if (array_key_exists($query, $this->cache)) {
+            $statement = $this->cache[$query];
+        } else {
+            $statement = $this->pdo->prepare($query);
+            $this->cache[$query] = $statement;
         }
-        return $this->productRepository;
-    }
-
-    public function create()
-    {
-        $create_query = <<<TEXT
-        CREATE TABLE IF NOT EXISTS products(
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            type ENUM('disc', 'book', 'furniture') NOT NULL,
-            sku  VARCHAR(255) UNIQUE NOT NULL CHECK(sku > ''),
-            name VARCHAR(255) NOT NULL CHECK(name > ''),
-            price DECIMAL(12, 2) NOT NULL check(price > 0),
-            size  DOUBLE NULL check(size > 0),
-            weight  DOUBLE NULL check(weight > 0),
-            height  DOUBLE NULL check(height > 0),
-            width  DOUBLE NULL check(width > 0),
-            length int NULL check(length > 0),
-            CONSTRAINT disc_requirements check (
-                    type != 'disc'
-                        OR type = 'disc'
-                        AND size IS NOT NULL
-                        AND weight IS NULL
-                        AND height IS NULL
-                        AND width IS NULL
-                        AND length IS NULL
-            ),
-            CONSTRAINT book_requirements check (
-                    type != 'book'
-                        OR type = 'book'
-                        AND size IS NULL
-                        AND weight IS NOT NULL
-                        AND height IS NULL
-                        AND width IS NULL
-                        AND length IS NULL
-        
-            ),
-            CONSTRAINT furniture_requirements check (
-                    type != 'furniture'
-                        OR type = 'furniture'
-                        AND size IS NULL
-                        AND weight IS NULL
-                        AND height IS NOT NULL
-                        AND width IS NOT NULL
-                        AND length IS NOT NULL
-            )
-        );
-        TEXT;
-
-        $this->pdo->exec($create_query);
-    }
-
-    public function destroy()
-    {
-        $destroy_query = "DROP TABLE IF EXISTS products;";
-        $this->pdo->exec($destroy_query);
+        return $statement;
     }
 }

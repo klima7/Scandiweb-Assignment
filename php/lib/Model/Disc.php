@@ -19,7 +19,7 @@ class Disc extends Product
         $this->size = $size;
     }
 
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
         ValidationUtils::assertNotNull($this->size, "size");
@@ -28,7 +28,16 @@ class Disc extends Product
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() + [
+            'type' => 'disc',
             'size' => $this->getSize(),
         ];
+    }
+
+    public function getDatabaseColumns(): array
+    {
+        return parent::getDatabaseColumns() + [
+                'type' => 'disc',
+                'size' => $this->getSize(),
+            ];
     }
 }

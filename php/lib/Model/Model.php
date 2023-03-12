@@ -2,11 +2,9 @@
 
 namespace Lib\Model;
 
-use JsonSerializable;
-
-abstract class Model implements JsonSerializable
+abstract class Model
 {
-    private ?string $id = null;
+    protected ?string $id = null;
 
     public function __construct(array $attrs, bool $allowNotExisting=false)
     {
@@ -33,14 +31,15 @@ abstract class Model implements JsonSerializable
         $this->id = null;
     }
 
-    public function jsonSerialize(): array
+    public function validate(): void
     {
-        return [
-            'id' => $this->getId()
-        ];
     }
 
-    public function validate()
-    {
-    }
+    abstract public static function getAll(): array;
+
+    abstract public static function get($id): object;
+
+    abstract public function save(): void;
+
+    abstract public function delete(): void;
 }
