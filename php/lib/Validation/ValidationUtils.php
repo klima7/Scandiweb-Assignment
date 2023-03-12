@@ -26,6 +26,13 @@ class ValidationUtils
         }
     }
 
+    public static function assertNotNull($field, $name)
+    {
+        if ($field == null) {
+            throw new ValidationException("$name can't be null");
+        }
+    }
+
     private static function getFractionDigitsCount($value): int
     {
         $str = (string)$value;

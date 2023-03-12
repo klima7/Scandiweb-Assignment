@@ -6,11 +6,11 @@ use Lib\Validation\ValidationUtils;
 
 class Product extends Model
 {
-    private string $sku;
-    private string $name;
-    private float $price;
+    private ?string $sku = null;
+    private ?string $name = null;
+    private ?float $price = null;
 
-    public function getSku(): string
+    public function getSku(): ?string
     {
         return $this->sku;
     }
@@ -21,7 +21,7 @@ class Product extends Model
         $this->sku = $sku;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -32,7 +32,7 @@ class Product extends Model
         $this->name = $name;
     }
 
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->price;
     }
@@ -43,6 +43,14 @@ class Product extends Model
         ValidationUtils::assertFractionDigitsCount($price, "price", 2);
         $this->price = $price;
     }
+
+    public function validate()
+    {
+        ValidationUtils::assertNotNull($this->sku, 'sku');
+        ValidationUtils::assertNotNull($this->name, 'name');
+        ValidationUtils::assertNotNull($this->price, 'price');
+    }
+
 
     public function jsonSerialize(): array
     {

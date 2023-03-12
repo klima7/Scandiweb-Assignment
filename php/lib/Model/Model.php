@@ -6,7 +6,7 @@ use JsonSerializable;
 
 abstract class Model implements JsonSerializable
 {
-    private string $id;
+    private ?string $id = null;
 
     public function __construct(array $attrs, bool $allowNotExisting=false)
     {
@@ -18,7 +18,7 @@ abstract class Model implements JsonSerializable
         }
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -38,5 +38,9 @@ abstract class Model implements JsonSerializable
         return [
             'id' => $this->getId()
         ];
+    }
+
+    public function validate()
+    {
     }
 }

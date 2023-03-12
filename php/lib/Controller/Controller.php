@@ -2,12 +2,22 @@
 
 namespace Lib\Controller;
 
+use Lib\Validation\ValidationException;
+
 abstract class Controller
 {
     public function handleRequest(): void
     {
         $handlerName = strtolower($_SERVER['REQUEST_METHOD']) . 'Action';
-        $this->$handlerName();
+        try {
+            $this->$handlerName();
+        } catch (ValidationException $e) {
+            $response = ['error' => $e->getMessage()];
+            $this->sendResponse($response, 400);
+        } catch (\Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            $this->sendResponse($response, 500);
+        }
     }
 
     protected function getAction(): void
@@ -28,7 +38,7 @@ abstract class Controller
     protected function sendResponse($data, int $status=200): void
     {
         http_response_code($status);
-        if (is_array($data)) {
+        if (is_array($data) || $data instanceof \JsonSerializable) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($data);
         } elseif (is_string($data)) {
@@ -37,5 +47,12 @@ abstract class Controller
         } elseif (!is_null($data)) {
             die("Invalid response data");
         }
+    }
+
+    protected function getRequestBody()
+    {
+        $body = file_get_contents('php://input');
+        $json = json_decode($body, true);
+        return $json;
     }
 }

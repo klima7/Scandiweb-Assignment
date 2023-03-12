@@ -7,9 +7,9 @@ use Lib\Validation\ValidationUtils;
 
 class Book extends Product
 {
-    private float $weight;
+    private ?float $weight = null;
 
-    public function getWeight(): float
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
@@ -19,6 +19,13 @@ class Book extends Product
         ValidationUtils::assertGreaterEqual($weight, "weight", 0);
         $this->weight = $weight;
     }
+
+    public function validate()
+    {
+        parent::validate();
+        ValidationUtils::assertNotNull($this->weight, "weight");
+    }
+
 
     public function jsonSerialize(): array
     {

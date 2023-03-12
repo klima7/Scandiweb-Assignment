@@ -6,11 +6,11 @@ use Lib\Validation\ValidationUtils;
 
 class Furniture extends Product
 {
-    private float $height;
-    private float $width;
-    private float $length;
+    private ?float $height = null;
+    private ?float $width = null;
+    private ?float $length = null;
 
-    public function getHeight(): float
+    public function getHeight(): ?float
     {
         return $this->height;
     }
@@ -21,7 +21,7 @@ class Furniture extends Product
         $this->height = $height;
     }
 
-    public function getWidth(): float
+    public function getWidth(): ?float
     {
         return $this->width;
     }
@@ -32,7 +32,7 @@ class Furniture extends Product
         $this->width = $width;
     }
 
-    public function getLength(): float
+    public function getLength(): ?float
     {
         return $this->length;
     }
@@ -41,6 +41,14 @@ class Furniture extends Product
     {
         ValidationUtils::assertGreaterEqual($length, "length", 0);
         $this->length = $length;
+    }
+
+    public function validate()
+    {
+        parent::validate();
+        ValidationUtils::assertNotNull($this->height, "height");
+        ValidationUtils::assertNotNull($this->width, "width");
+        ValidationUtils::assertNotNull($this->length, "length");
     }
 
     public function jsonSerialize(): array

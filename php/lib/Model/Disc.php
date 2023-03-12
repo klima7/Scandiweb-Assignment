@@ -6,9 +6,9 @@ use Lib\Validation\ValidationUtils;
 
 class Disc extends Product
 {
-    private float $size;
+    private ?float $size = null;
 
-    public function getSize(): float
+    public function getSize(): ?float
     {
         return $this->size;
     }
@@ -17,6 +17,12 @@ class Disc extends Product
     {
         ValidationUtils::assertGreaterEqual($size, "size", 0);
         $this->size = $size;
+    }
+
+    public function validate()
+    {
+        parent::validate();
+        ValidationUtils::assertNotNull($this->size, "size");
     }
 
     public function jsonSerialize(): array
