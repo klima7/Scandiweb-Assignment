@@ -21,7 +21,7 @@ class Product extends Model implements \JsonSerializable
 
     public function setSku(string $sku): void
     {
-        ValidationUtils::assertGreaterEqual($sku, "sku", 0);
+        ValidationUtils::assertGreaterEqual($sku, 'sku', 0);
         $this->sku = $sku;
     }
 
@@ -32,7 +32,7 @@ class Product extends Model implements \JsonSerializable
 
     public function setName(string $name): void
     {
-        ValidationUtils::assertNotBlank($name, "name");
+        ValidationUtils::assertNotBlank($name, 'name');
         $this->name = $name;
     }
 
@@ -43,8 +43,8 @@ class Product extends Model implements \JsonSerializable
 
     public function setPrice(float $price): void
     {
-        ValidationUtils::assertGreaterEqual($price, "price", 0);
-        ValidationUtils::assertFractionDigitsCount($price, "price", 2);
+        ValidationUtils::assertGreaterEqual($price, 'price', 0);
+        ValidationUtils::assertFractionDigitsCount($price, 'price', 2);
         $this->price = $price;
     }
 
@@ -55,21 +55,21 @@ class Product extends Model implements \JsonSerializable
 
     public static function getAll(): array
     {
-        $query = "select id, type, sku, name, price, size, weight, height, width, length from products";
+        $query = 'select id, type, sku, name, price, size, weight, height, width, length from products';
         $data = Database::getInstance()->executeAndFetch($query);
         return array_map(fn ($array) => self::cvtArrayToObject($array), $data);
     }
 
     public static function get($id): ?object
     {
-        $query = "select id, type, sku, name, price, size, weight, height, width, length from products where id=?";
+        $query = 'select id, type, sku, name, price, size, weight, height, width, length from products where id=?';
         $data = Database::getInstance()->executeAndFetch($query, [$id]);
         return count($data) == 0 ? null : self::cvtArrayToObject($data[0]);
     }
 
     protected function executeDelete(): void
     {
-        $query = "delete from products where id = ?";
+        $query = 'delete from products where id = ?';
         Database::getInstance()->execute($query, [$this->id]);
     }
 

@@ -29,7 +29,7 @@ class ValidationUtils
     public static function assertNotNull($field, $name)
     {
         if ($field == null) {
-            throw new ValidationException("$name can't be null");
+            throw new ValidationException("$name value is missing");
         }
     }
 

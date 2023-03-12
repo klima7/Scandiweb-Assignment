@@ -15,14 +15,14 @@ class Disc extends Product
 
     public function setSize(float $size): void
     {
-        ValidationUtils::assertGreaterEqual($size, "size", 0);
+        ValidationUtils::assertGreaterEqual($size, 'size', 0);
         $this->size = $size;
     }
 
     public function validate(): void
     {
         parent::validate();
-        ValidationUtils::assertNotNull($this->size, "size");
+        ValidationUtils::assertNotNull($this->size, 'size');
     }
 
     protected function getAttributesArray(): array

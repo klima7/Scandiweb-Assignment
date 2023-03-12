@@ -17,7 +17,7 @@ class Furniture extends Product
 
     public function setHeight(float $height): void
     {
-        ValidationUtils::assertGreaterEqual($height, "height", 0);
+        ValidationUtils::assertGreaterEqual($height, 'height', 0);
         $this->height = $height;
     }
 
@@ -28,7 +28,7 @@ class Furniture extends Product
 
     public function setWidth(float $width): void
     {
-        ValidationUtils::assertGreaterEqual($width, "width", 0);
+        ValidationUtils::assertGreaterEqual($width, 'width', 0);
         $this->width = $width;
     }
 
@@ -39,16 +39,16 @@ class Furniture extends Product
 
     public function setLength(float $length): void
     {
-        ValidationUtils::assertGreaterEqual($length, "length", 0);
+        ValidationUtils::assertGreaterEqual($length, 'length', 0);
         $this->length = $length;
     }
 
     public function validate(): void
     {
         parent::validate();
-        ValidationUtils::assertNotNull($this->height, "height");
-        ValidationUtils::assertNotNull($this->width, "width");
-        ValidationUtils::assertNotNull($this->length, "length");
+        ValidationUtils::assertNotNull($this->height, 'height');
+        ValidationUtils::assertNotNull($this->width, 'width');
+        ValidationUtils::assertNotNull($this->length, 'length');
     }
 
     protected function getAttributesArray(): array

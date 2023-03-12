@@ -16,14 +16,14 @@ class Book extends Product
 
     public function setWeight(float $weight): void
     {
-        ValidationUtils::assertGreaterEqual($weight, "weight", 0);
+        ValidationUtils::assertGreaterEqual($weight, 'weight', 0);
         $this->weight = $weight;
     }
 
     public function validate(): void
     {
         parent::validate();
-        ValidationUtils::assertNotNull($this->weight, "weight");
+        ValidationUtils::assertNotNull($this->weight, 'weight');
     }
 
 

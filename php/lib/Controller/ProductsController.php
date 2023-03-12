@@ -18,13 +18,13 @@ class ProductsController extends Controller
         $body =$this->sanitizeArrayValues($this->getJsonBody());
 
         if (!array_key_exists('type', $body)) {
-            throw new ValidationException("missing type property");
+            throw new ValidationException('missing type property');
         }
 
         $type = $body['type'];
 
         if (!in_array($type, Product::TYPES)) {
-            throw new ValidationException("invalid type value");
+            throw new ValidationException('invalid type value');
         }
 
         $className = "Lib\\Model\\$type";
@@ -37,13 +37,13 @@ class ProductsController extends Controller
     {
         $body = $this->getJsonBody();
         if (!array_key_exists('ids', $body)) {
-            throw new ValidationException("missing ids property");
+            throw new ValidationException('missing ids property');
         }
 
         $products = [];
         foreach ($body['ids'] as $id) {
             if (!is_int($id)) {
-                throw new ValidationException("ids must be integers");
+                throw new ValidationException('ids must be integers');
             }
             $product = Product::get($id);
             if ($product != null) {
