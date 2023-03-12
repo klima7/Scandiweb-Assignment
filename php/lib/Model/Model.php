@@ -6,11 +6,11 @@ abstract class Model
 {
     protected ?string $id = null;
 
-    public function __construct(array $attrs, bool $allowNotExisting=false)
+    public function __construct(array $attrs)
     {
         foreach ($attrs as $attr => $value) {
             $setterName = 'set' . ucfirst($attr);
-            if (!$allowNotExisting or method_exists($this, $setterName)) {
+            if (method_exists($this, $setterName)) {
                 $this->$setterName($value);
             }
         }
@@ -21,25 +21,31 @@ abstract class Model
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
 
-    public function clearId(): void
+    public function save(): void
     {
-        $this->id = null;
+        $this->validate();
+        $id = $this->executeSave();
+        $this->id = $id;
     }
 
-    public function validate(): void
+    public function delete(): void
     {
+        $this->executeDelete();
+        $this->id = null;
     }
 
     abstract public static function getAll(): array;
 
     abstract public static function get($id): object;
 
-    abstract public function save(): void;
+    abstract protected function executeSave(): int;
 
-    abstract public function delete(): void;
+    abstract protected function executeDelete(): void;
+
+    abstract protected function validate(): void;
 }

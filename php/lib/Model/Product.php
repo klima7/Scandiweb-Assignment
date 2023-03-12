@@ -6,7 +6,7 @@ use Lib\Data\Database;
 use Lib\Validation\ValidationException;
 use Lib\Validation\ValidationUtils;
 
-class Product extends Model
+class Product extends Model implements \JsonSerializable
 {
     private ?string $sku = null;
     private ?string $name = null;
@@ -19,7 +19,7 @@ class Product extends Model
 
     public function setSku(string $sku): void
     {
-        ValidationUtils::assertGreaterEqual($sku, "SKU", 0);
+        ValidationUtils::assertGreaterEqual($sku, "sku", 0);
         $this->sku = $sku;
     }
 
@@ -46,32 +46,14 @@ class Product extends Model
         $this->price = $price;
     }
 
-    public function validate(): void
-    {
-        ValidationUtils::assertNotNull($this->sku, 'sku');
-        ValidationUtils::assertNotNull($this->name, 'name');
-        ValidationUtils::assertNotNull($this->price, 'price');
-    }
-
-
     public function jsonSerialize(): array
     {
-        return parent::jsonSerialize() + [
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-        ];
-    }
-
-    protected function getDatabaseColumns(): array
-    {
         return [
-            'id' => $this->getId(),
-            'sku' => $this->getSku(),
-            'name' => $this->getName(),
-            'price' => $this->getPrice(),
-        ];
+                'id' => $this->getId(),
+                'sku' => $this->getSku(),
+                'name' => $this->getName(),
+                'price' => $this->getPrice(),
+            ];
     }
 
     public static function getAll(): array
@@ -91,26 +73,42 @@ class Product extends Model
         return self::cvtArrayToObject($data[0]);
     }
 
-    public function delete(): void
+    protected function executeDelete(): void
     {
         $query = "delete from products where id = ?";
         Database::getInstance()->execute($query, [$this->id]);
     }
 
-    public function save(): void
+    protected function executeSave(): int
     {
-        $this->validate();
         $columns = $this->getDatabaseColumns();
         $query = self::constructInsertQuery($columns);
         Database::getInstance()->execute($query, array_values($columns));
-        $this->setId(Database::getInstance()->getLastInsertedId());
+        return Database::getInstance()->getLastInsertedId();
+    }
+
+    protected function getDatabaseColumns(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'sku' => $this->getSku(),
+            'name' => $this->getName(),
+            'price' => $this->getPrice(),
+        ];
+    }
+
+    protected function validate(): void
+    {
+        ValidationUtils::assertNotNull($this->sku, 'sku');
+        ValidationUtils::assertNotNull($this->name, 'name');
+        ValidationUtils::assertNotNull($this->price, 'price');
     }
 
     private static function cvtArrayToObject(array $array): object
     {
         $type = ucfirst($array['type']);
         $fullName = "Lib\\Model\\$type";
-        return new $fullName($array, true);
+        return new $fullName($array);
     }
 
     private static function constructInsertQuery(array $columns): string
