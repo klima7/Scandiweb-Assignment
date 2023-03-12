@@ -20,5 +20,8 @@
         "start": "php -S localhost:443",
         "db_setup": "php scripts\\db_setup.php",
         "db_destroy": "php scripts\\db_destroy.php"
-    }
+    },
+  "require": {
+    "ext-pdo": "*"
+  }
 }

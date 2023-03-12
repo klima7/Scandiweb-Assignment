@@ -6,11 +6,13 @@ abstract class Model
 {
     private string $id;
 
-    public function __construct(array $attrs)
+    public function __construct(array $attrs, bool $allowNotExisting=false)
     {
         foreach ($attrs as $attr => $value) {
             $setterName = 'set' . ucfirst($attr);
-            $this->$setterName($value);
+            if (!$allowNotExisting or method_exists($this, $setterName)) {
+                $this->$setterName($value);
+            }
         }
     }
 
