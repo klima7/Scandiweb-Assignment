@@ -1,18 +1,38 @@
-import { Fragment } from 'react';
-import Button from 'react-bootstrap/Button';
-import jquery from 'jquery';
+import { Fragment, useEffect, useState } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import ProductTile from "./ProductTile.js";
+import Api from "../../api.js";
 
 function ListPage() {
-  jquery.get('api/products.php', (data, status) => {
-    console.log(status);
-    console.log(data);
-  });
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    console.log("fetchProducts");
+    let allProducts = await Api.getAllProducts();
+    console.log(allProducts);
+    setProducts(allProducts);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <Fragment>
-    <div className="App">
-      List Page
-      <Button variant="primary">Button</Button>
-    </div>
+      <div className="App">
+        <Container fluid>
+          <Row>
+            {products.map((product) => (
+              <Col xxs={12} sm={6} md={4} lg={3} xxl={2}>
+                <ProductTile product={product} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
     </Fragment>
   );
 }
