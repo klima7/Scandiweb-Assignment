@@ -12,7 +12,11 @@ abstract class Controller
         try {
             $this->$handlerName();
         } catch (ValidationException $e) {
-            $response = ['error' => $e->getMessage()];
+            $response = [
+                'field' => $e->getField(),
+                'error' => $e->getError(),
+                'code' => $e->getCode()
+            ];
             $this->sendResponse($response, 400);
         } catch (\Exception $e) {
             $response = ['error' => $e->getMessage()];
@@ -54,7 +58,7 @@ abstract class Controller
         $body = file_get_contents('php://input');
         $json = json_decode($body, true);
         if ($json == null) {
-            throw new ValidationException('invalid json supplied');
+            throw new ValidationException('general', 'invalid json supplied');
         }
         return $json;
     }

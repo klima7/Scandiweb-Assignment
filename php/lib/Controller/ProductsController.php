@@ -7,6 +7,8 @@ use Lib\Validation\ValidationException;
 
 class ProductsController extends Controller
 {
+    const ERROR_SKU_NOT_UNIQUE = 1;
+
     public function getAction(): void
     {
         $products = Product::getAll();
@@ -18,18 +20,26 @@ class ProductsController extends Controller
         $body =$this->sanitizeArrayValues($this->getJsonBody());
 
         if (!array_key_exists('type', $body)) {
-            throw new ValidationException('missing type property');
+            throw new ValidationException('type', 'property missing');
         }
 
         $type = $body['type'];
 
         if (!in_array($type, Product::TYPES)) {
-            throw new ValidationException('invalid type value');
+            throw new ValidationException('type', 'invalid value');
         }
 
         $className = "Lib\\Model\\$type";
         $product = new $className($body);
-        $product->save();
+
+        try {
+            $product->save();
+        } catch(\PDOException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                throw new ValidationException('sku', 'not unique value', self::ERROR_SKU_NOT_UNIQUE);
+            }
+        }
+
         $this->sendResponse($product, 201);
     }
 
@@ -37,13 +47,13 @@ class ProductsController extends Controller
     {
         $body = $this->getJsonBody();
         if (!array_key_exists('ids', $body)) {
-            throw new ValidationException('missing ids property');
+            throw new ValidationException('ids', 'property missing');
         }
 
         $products = [];
         foreach ($body['ids'] as $id) {
             if (!is_int($id)) {
-                throw new ValidationException('ids must be integers');
+                throw new ValidationException('ids', 'not number supplied');
             }
             $product = Product::get($id);
             if ($product != null) {
@@ -52,7 +62,6 @@ class ProductsController extends Controller
         }
 
         array_map(fn ($product) => $product->delete(), $products);
-
         $this->sendResponse([], 204);
     }
 
