@@ -14,14 +14,12 @@ function ListPage() {
   const navigate = useNavigate(); 
 
   async function fetchProducts() {
-    console.log("fetchProducts");
     let allProducts = await Api.getAllProducts();
     console.log(allProducts);
     setProducts(allProducts);
   };
 
   function onAddClick() {
-    console.log('Click');
     navigate('/add');
   }
 
