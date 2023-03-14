@@ -47,8 +47,7 @@
         "src",
         "public"
       ],
-      "extensions": "js,jsx,css,svg,png,txt,ico,html,php",
-      "legacyWatch": true
+      "extensions": "js,jsx,css,svg,png,txt,ico,html,php"
     }
   }
 }

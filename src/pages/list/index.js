@@ -2,19 +2,32 @@ import { Fragment, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 import ProductTile from "./ProductTile.js";
+import Header from "../../components/Header.js";
 import Api from "../../api.js";
 
 function ListPage() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate(); 
 
-  const fetchProducts = async () => {
+  async function fetchProducts() {
     console.log("fetchProducts");
     let allProducts = await Api.getAllProducts();
     console.log(allProducts);
     setProducts(allProducts);
   };
+
+  function onAddClick() {
+    console.log('Click');
+    navigate('/add');
+  }
+
+  function onMassDeleteClick() {
+
+  }
 
   useEffect(() => {
     fetchProducts();
@@ -22,6 +35,10 @@ function ListPage() {
 
   return (
     <Fragment>
+      <Header>
+        <Button variant="success" onClick={onAddClick}>Add</Button>{' '}
+        <Button variant="danger" onClick={onMassDeleteClick}>Mass Delete</Button>
+      </Header>
       <div className="App">
         <Container fluid>
           <Row>

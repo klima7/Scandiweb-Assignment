@@ -10,7 +10,7 @@ function ProductTile({ product }) {
       style={{ width: "100%" }}
       className="mb-2"
     >
-      <Card.Header>
+      <Card.Header style={{'padding-top': 0, 'padding-bottom': 0, 'padding-left': '10px'}}>
         <Form.Check type="checkbox" label='' />
       </Card.Header>
       <Card.Body style={{'padding': 0}}>
@@ -30,7 +30,7 @@ function ProductTile({ product }) {
 function getProductSpecificText(product) {
     switch(product.type) {
         case 'book':
-            return `Weight: ${product.weight}`;
+            return `Weight: ${product.weight} KG`;
         case 'disc':
             return `Size: ${product.size} MB`;
         case 'furniture':
